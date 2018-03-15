@@ -1,0 +1,2 @@
+0 2 * * 0 oyb_staticdata
+*/5 * * * * oyb_dynamicdata
