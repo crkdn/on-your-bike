@@ -13,6 +13,7 @@ for station in all_stations:
 
     db.cursor.execute(query, (number, name, address, latitude, longitude))
 
-db.commit_and_close()
+db.commit()
+db.close()
 
 print()
