@@ -2,6 +2,7 @@ import logging
 import requests 
 import json
 import db_connection as db
+import mysql
 
 # Set up logger (do not place logs under VCS)
 logging.basicConfig(filename="logs/dynamicstationdata_log.txt", level=logging.INFO, format='%(asctime)s %(message)s',datefmt='%m-%d %H:%M')
@@ -22,15 +23,25 @@ except requests.exceptions.RequestException as e:
 if response.status_code == 200:
     
     all_stations = response.json()
+    query = "INSERT INTO BikeStationDynamicData VALUES (%s, %s, %s, %s, %s, %s)"
     
+    # Extract information
     for station in all_stations:
-        number = station["number"]
-        banking = station["banking"]
-        status = station["status"]
-        bike_stands = station["bike_stands"]
-        available__bike_stands = station["available_bike_stands"]
-        timestamp = station["last_update"]
+        number = station.get("number")
+        timestamp = station.get("last_update")
+        banking = station.get("banking")
+        status = station.get("status")
+        bike_stands = station.get("bike_stands")
+        available__bike_stands = station.get("available_bike_stands")
+        
+        # Write to database
+        try:
+            db.cursor.execute(query, (number, timestamp, banking, status, bike_stands, available__bike_stands))
+        except mysql.connector.Error as e:
+            logging.info("Database write failed. Error {}".format(e))
 else:
     logging.info("Request failed. Error: {}".format(response.status_code))
-    
+ 
+db.commit()
+db.close()
     
