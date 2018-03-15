@@ -11,7 +11,10 @@ cnx = mysql.connector.connect(host=db_hostname, user=db_user, password=db_pass, 
 cursor = cnx.cursor(buffered=True)
 
 
-def commit_and_close():
+def commit():
     cnx.commit()
+
+
+def close():
     cursor.close()
     cnx.close()
