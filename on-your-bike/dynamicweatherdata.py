@@ -1,7 +1,8 @@
 import requests
 import json
+import db_connection as db
 
-# Get JCDecaux API key (do not place credentials under VCS)
+# Get OWM API key (do not place credentials under VCS)
 with open("credentials/WeatherMapAPIKey.txt") as file:
     api_key = file.readline().strip()
 
@@ -12,17 +13,29 @@ parameters = {"id": 2964574, "APPID": api_key}
 
 # response is the name of my dictionary
 response = requests.get("https://api.openweathermap.org/data/2.5/weather", params=parameters).json()
-print(response)
 
+# get the right data
 WeatherDescription= response["weather"][0]["main"]
 Icon = response["weather"][0]["icon"]
-Temperature= response["main"]["temp"]
-WindSpeed = response["wind"]["speed"]
-Clouds = response["clouds"]["all"]
-Rain = response["rain"]["3h"]
-Snow = response["snow"]["3h"]
-TimeStamp= response["dt"]
-Sunrise = response["sys"]["sunrise"]
-Sunset = response["sys"]["sunset"]
+Temperature= (response.get("main") or {}).get("temp")
+WindSpeed = (response.get("wind") or {}).get("speed")
+Clouds = (response.get("clouds") or {}).get("all")
+Rain = (response.get("rain") or {}).get("3h")
+Snow = (response.get("snow") or {}).get("3h")
+TimeStamp= response.get("dt")
+Sunrise = (response.get("sys") or {}).get("sunrise")
+Sunset = (response.get("sys") or {}).get("sunset")
+
+
+# write data to database
+query = "INSERT INTO WeatherData VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+db.cursor.execute(query, (WeatherDescription, Icon, Temperature, WindSpeed, Clouds, Rain, Snow, TimeStamp, Sunrise, Sunset))
+
+db.commit()
+db.close()
+
+
+
+
 
 
