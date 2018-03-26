@@ -1,6 +1,6 @@
 /.DS_Store
 /.project
-
+/.idea
 /.pydevproject
 
 /on-your-bike/__pycache__/*
