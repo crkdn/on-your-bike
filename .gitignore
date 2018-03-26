@@ -1,0 +1,8 @@
+/.DS_Store
+/.project
+/.idea
+/.pydevproject
+
+/on-your-bike/__pycache__/*
+/on-your-bike/credentials/*
+/on-your-bike/logs/*
