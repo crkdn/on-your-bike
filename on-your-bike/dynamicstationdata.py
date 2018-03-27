@@ -10,7 +10,7 @@ working_dir = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(filename=os.path.join(working_dir, "logs/dynamicstationdata_log.txt"), level=logging.INFO, format='%(asctime)s %(message)s',datefmt='%m-%d %H:%M')
 
 # Get JCDecaux API key (do not place credentials under VCS)
-with open("credentials/JCDecauxAPIKey.txt") as file:
+with open(os.path.join(working_dir, "credentials/JCDecauxAPIKey.txt")) as file:
     api_key = file.readline().strip()
 
 # Make request
