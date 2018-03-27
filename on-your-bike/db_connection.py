@@ -1,7 +1,10 @@
 import mysql.connector
+import os
+
+working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Keep keys outside of VCS
-with open("credentials/dbinfo.txt") as dbinfo:
+with open(os.path.join(working_dir, "credentials/dbinfo.txt")) as dbinfo:
     db_creds = dbinfo.read().splitlines()
     db_hostname = db_creds[0]
     db_user = db_creds[1]
