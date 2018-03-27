@@ -1,11 +1,13 @@
 import logging
-import requests 
-import json
+import requests
 import db_connection as db
 import mysql
+import os
+
+working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Set up logger (do not place logs under VCS)
-logging.basicConfig(filename="logs/dynamicstationdata_log.txt", level=logging.INFO, format='%(asctime)s %(message)s',datefmt='%m-%d %H:%M')
+logging.basicConfig(filename=os.path.join(working_dir, "logs/dynamicstationdata_log.txt"), level=logging.INFO, format='%(asctime)s %(message)s',datefmt='%m-%d %H:%M')
 
 # Get JCDecaux API key (do not place credentials under VCS)
 with open("credentials/JCDecauxAPIKey.txt") as file:
