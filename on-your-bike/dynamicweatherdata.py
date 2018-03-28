@@ -1,15 +1,16 @@
 import requests
 import json
 import db_connection as db
+import os
+
+working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Get OWM API key (do not place credentials under VCS)
-with open("credentials/WeatherMapAPIKey.txt") as file:
+with open(os.path.join(working_dir, "credentials/WeatherMapAPIKey.txt")) as file:
     api_key = file.readline().strip()
-
 
 #id is the key, value is the key for Dublin
 parameters = {"id": 2964574, "APPID": api_key}
-
 
 # response is the name of my dictionary
 response = requests.get("https://api.openweathermap.org/data/2.5/weather", params=parameters).json()
