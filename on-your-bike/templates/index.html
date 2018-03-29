@@ -1,15 +1,40 @@
-<!doctype html>
-<html>  
+<!DOCTYPE html>
+<html lang="en">
+    
 <head>
-    <meta charset="utf-8">
-    <title>On Your Bike</title>
-    <link rel="stylesheet" type="text/css" href="mainstyle.css"> 
+	<title>On Your Bike</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/css/mainstyle.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
+    
 <body>
-    <header>
+    
+    <div id="title" class="container-fluid text-center">
         <h1>On Your Bike</h1>
-    </header>
-    <main>
+    </div>
+    
+	<header class="container">
+		Introduction to Webpage goes here.
+	</header>
+    
+    <main class="container">
+        <section id="weather-section" class="row">
+            <div class="col-12">Weather Information goes here.</div>
+        </section>
+        <section id="bike-section" class="row">
+            <div id="map-container" class="col-8">Google Map goes here.</div>
+            <div id="popup-container" class="col-4">Information for a selected Station goes here.</div>
+        </section>
     </main>
+    
+    <footer class="container-fluid text-center">
+        Footer goes here.
+    </footer>
+    
 </body>
 </html>
