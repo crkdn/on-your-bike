@@ -1,19 +1,34 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 from flask.templating import render_template
-import db_connection as db
+from importlib import reload
+import mysql
+
+error_msg = False
+try:
+    import db_connection as db
+except Exception as err:
+    error_msg = "Import of custom module 'db_connection' failed. Fix error and restart flask application. Error - {}".format(err)
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def index():
+    if error_msg:
+        return error_msg
     return render_template("index.html")
 
 
 @app.route('/all-locations')
 def get_station_static_data():
+    
+    try:
+        if not db.cnx.is_connected():
+            reload(db)
+        db.cursor.execute("SELECT * FROM BikeStationStaticData")
+    except:
+        abort(503)
+    
     locations = []
-    db.cursor.execute("SELECT * FROM BikeStationStaticData")
     for row in db.cursor:
         locations.append({"number": row[0], "latitude": row[3], "longitude": row[4]})
     return jsonify(locations)
@@ -21,7 +36,14 @@ def get_station_static_data():
 
 @app.route("/live-data/<station_id>")
 def get_live_data(station_id):
-    db.cursor.execute("SELECT Address, Timestamp, Status, BikeStands, AvailableStands FROM OnYourBikeDB.BikeStationStaticData, OnYourBikeDB.BikeStationDynamicData WHERE BikeStationStaticData.Number = BikeStationDynamicData.Number AND BikeStationStaticData.Number = %s ORDER BY Timestamp DESC LIMIT 1", (station_id, ))
+    
+    try:
+        if not db.cnx.is_connected():
+            reload(db)
+        db.cursor.execute("SELECT Address, Timestamp, Status, BikeStands, AvailableStands FROM OnYourBikeDB.BikeStationStaticData, OnYourBikeDB.BikeStationDynamicData WHERE BikeStationStaticData.Number = BikeStationDynamicData.Number AND BikeStationStaticData.Number = %s ORDER BY Timestamp DESC LIMIT 1", (station_id, ))
+    except:
+        abort(503)
+        
     twenty_four_hours_data = []
     for (address, timestamp, status, bike_stands, available_stands) in db.cursor:
         twenty_four_hours_data.append({

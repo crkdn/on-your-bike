@@ -13,7 +13,11 @@ function initMap() {
 function drawMarkers(map) {
     fetch("all-locations")
         .then(function (response){
-            return response.json()})
+        if (response.ok){
+            return response.json();
+        }
+		throw new Error("Sorry, this Service is currently unavailable");                            
+        })
         .then(function (stationJSON){
             return stationJSON.map(function (station) {
                 var marker = new google.maps.Marker({
@@ -24,11 +28,17 @@ function drawMarkers(map) {
                     document.getElementById("popup-container").innerHTML = "<i>Loading...</i>";
                     fetch(`live-data/${this.label}`)
                         .then(function(response){
-                            return response.json();
+                        if (response.ok) {
+                        	return response.json();
+                        }
+                        throw new Error("Sorry, this Service is currently unavailable");                            
                         })
                         .then(function(dynamicDataJSON){
                             currentData(dynamicDataJSON[0]);
                             twentyFourHourGraph(dynamicDataJSON);
+                        })
+                        .catch(function(error){
+                        	document.getElementById("popup-container").innerHTML = error.message;
                         });
                 });
                 return marker;
@@ -38,6 +48,9 @@ function drawMarkers(map) {
             return new MarkerClusterer(map, markers, {
                 imagePath: "../static/scripts/MarkerClusterer/m"
             });
+        })
+        .catch(function(error){
+        	document.getElementById("popup-container").innerHTML = error.message;
         });
 }
 
