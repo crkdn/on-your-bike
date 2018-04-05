@@ -27,14 +27,9 @@ function drawMarkers(map) {
                             return response.json();
                         })
                         .then(function(dynamicDataJSON){
-                            return `<h3>${dynamicDataJSON["address"]}</h3>
-<b>Status:</b> ${dynamicDataJSON["status"]}<br>
-<b>Bikes Available:</b> ${dynamicDataJSON["bikes"]}<br>
-<b>Free Stands:</b> ${dynamicDataJSON["available"]}<br>
-<small>Last updated: ${new Date(dynamicDataJSON["timestamp"])}</small>`
-                        }).then(function(popupContent){
-                            document.getElementById("popup-container").innerHTML = popupContent;
-                    });
+                            currentData(dynamicDataJSON[0]);
+                            twentyFourHourGraph(dynamicDataJSON);
+                        });
                 });
                 return marker;
             });
@@ -44,4 +39,16 @@ function drawMarkers(map) {
                 imagePath: "../static/scripts/MarkerClusterer/m"
             });
         });
+}
+
+function currentData(singleJson){
+    document.getElementById("popup-container").innerHTML = `<h3>${singleJson["address"]}</h3>
+<b>Status:</b> ${singleJson["status"]}<br>
+<b>Bikes Available:</b> ${singleJson["bikes"]}<br>
+<b>Free Stands:</b> ${singleJson["available"]}<br>
+<small>Last updated: ${new Date(singleJson["timestamp"])}</small>`;
+}
+
+function twentyFourHourGraph(multiJson){
+    // Do something
 }

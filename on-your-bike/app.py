@@ -22,13 +22,16 @@ def get_station_static_data():
 @app.route("/live-data/<station_id>")
 def get_live_data(station_id):
     db.cursor.execute("SELECT Address, Timestamp, Status, BikeStands, AvailableStands FROM OnYourBikeDB.BikeStationStaticData, OnYourBikeDB.BikeStationDynamicData WHERE BikeStationStaticData.Number = BikeStationDynamicData.Number AND BikeStationStaticData.Number = %s ORDER BY Timestamp DESC LIMIT 1", (station_id, ))
+    twenty_four_hours_data = []
     for (address, timestamp, status, bike_stands, available_stands) in db.cursor:
-        return jsonify(
-            {"address": address,
-             "timestamp": timestamp,
-             "status": status,
-             "bikes": bike_stands - available_stands,
-             "available": available_stands})
+        twenty_four_hours_data.append({
+            "address": address,
+            "timestamp": timestamp,
+            "status": status,
+            "bikes": bike_stands - available_stands,
+            "available": available_stands
+        })
+    return jsonify(twenty_four_hours_data)
 
 
 if __name__ == '__main__':
