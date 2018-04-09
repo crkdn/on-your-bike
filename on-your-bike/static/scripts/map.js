@@ -13,11 +13,7 @@ function initMap() {
 function drawMarkers(map) {
     fetch("all-locations")
         .then(function (response){
-        if (response.ok){
-            return response.json();
-        }
-		throw new Error("Sorry, this Service is currently unavailable");                            
-        })
+            return response.json()})
         .then(function (stationJSON){
             return stationJSON.map(function (station) {
                 var marker = new google.maps.Marker({
@@ -28,17 +24,11 @@ function drawMarkers(map) {
                     document.getElementById("popup-container").innerHTML = "<i>Loading...</i>";
                     fetch(`live-data/${this.label}`)
                         .then(function(response){
-                        if (response.ok) {
-                        	return response.json();
-                        }
-                        throw new Error("Sorry, this Service is currently unavailable");                            
+                            return response.json();
                         })
                         .then(function(dynamicDataJSON){
                             currentData(dynamicDataJSON[0]);
                             twentyFourHourGraph(dynamicDataJSON);
-                        })
-                        .catch(function(error){
-                        	document.getElementById("popup-container").innerHTML = error.message;
                         });
                 });
                 return marker;
@@ -48,13 +38,11 @@ function drawMarkers(map) {
             return new MarkerClusterer(map, markers, {
                 imagePath: "../static/scripts/MarkerClusterer/m"
             });
-        })
-        .catch(function(error){
-        	document.getElementById("popup-container").innerHTML = error.message;
         });
 }
 
 function currentData(singleJson){
+    
     document.getElementById("popup-container").innerHTML = `<h3>${singleJson["address"]}</h3>
 <b>Status:</b> ${singleJson["status"]}<br>
 <b>Bikes Available:</b> ${singleJson["bikes"]}<br>
@@ -62,6 +50,37 @@ function currentData(singleJson){
 <small>Last updated: ${new Date(singleJson["timestamp"])}</small>`;
 }
 
-function twentyFourHourGraph(multiJson){
-    // Do something
+
+
+function twentyFourHourGraph(multiJson){    
+    var valuesDictionary = [];
+
+multiJson.forEach(function(days){
+    
+var time = days["timestamp"];
+var available = days["available"];
+
+    
+// Convert unix time to time
+var date = new Date(time*1000);
+// Hours part from the timestamp
+var hours = date.getHours();
+// Minutes part from the timestamp
+var minutes = "0" + date.getMinutes();
+var dec = (minutes / 3 * 5).toString();
+
+var formattedMinutes = dec.substring(0, dec.indexOf("."));
+
+
+// to display in readable format
+var formattedTime = hours + '.' + formattedMinutes;
+    
+valuesDictionary.push([formattedTime, available]);
+
+
+
+});
+    
+console.log(valuesDictionary);
+    
 }
