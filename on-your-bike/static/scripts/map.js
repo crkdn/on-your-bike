@@ -27,6 +27,7 @@ function drawMarkers(map) {
                             return response.json();
                         })
                         .then(function(dynamicDataJSON){
+                        
                             currentData(dynamicDataJSON[0]);
                             twentyFourHourGraph(dynamicDataJSON);
                         });
@@ -54,33 +55,63 @@ function currentData(singleJson){
 
 function twentyFourHourGraph(multiJson){    
     var valuesDictionary = [];
-
-multiJson.forEach(function(days){
+    var f_ar = [];
+    multiJson.forEach(function(days){
     
-var time = days["timestamp"];
-var available = days["available"];
+        var time = days["timestamp"];
+        var available = days["available"];
+        console.log(time);
+        console.log(typeof(time[0]));
+   
+    time_conver = function(time){
+//        var date = new Date(time*1000);
+//        var custom_format = ('0' + date.getHours()).slice(-2) + '.' + ('0' + date.getMinutes()).slice(-2);
+//        console.log(custom_format)
+        // return custom_format;
+        var data = new Date(time)
+        return data;
+    }
 
     
-// Convert unix time to time
-var date = new Date(time*1000);
-// Hours part from the timestamp
-var hours = date.getHours();
-// Minutes part from the timestamp
-var minutes = "0" + date.getMinutes();
-var dec = (minutes / 3 * 5).toString();
-
-var formattedMinutes = dec.substring(0, dec.indexOf("."));
-
-
-// to display in readable format
-var formattedTime = hours + '.' + formattedMinutes;
-    
-valuesDictionary.push([formattedTime, available]);
-
-
+   
+    var value_i = parseInt(time);
+    var availabl_i = parseInt(available);
+    b_obj = {}
+    b_obj.x = time_conver(value_i);
+    b_obj.y = availabl_i;
+    f_ar.push(b_obj);
 
 });
     
-console.log(valuesDictionary);
+
+
+//Plotly.newPlot('popup-container', data);
+
+//console.log(valuesDictionary);/
+    var chart = new CanvasJS.Chart("graph-container",
+    {
+      title:{
+        text: "Bike Data"
+      },
+
+      axisX:{
+        title: "Time",
+        gridThickness: 2,
+        valueFormatString: "HH:mm",
+        // intervalType: "hour",        
+        labelAngle: -20
+      },
+      axisY:{
+        title: "Availability"
+      },
+      data: [
+      {        
+        type: "line",
+        dataPoints: f_ar
+      }
+      ]
+    });
+    
+    chart.render();
     
 }
