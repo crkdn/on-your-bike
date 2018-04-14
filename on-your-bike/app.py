@@ -36,7 +36,6 @@ def get_station_static_data():
 
 @app.route("/live-data/<station_id>")
 def get_live_data(station_id):
-    
     try:
         if not db.cnx.is_connected():
             reload(db)
