@@ -2,7 +2,7 @@
 /.project
 /.idea
 /.pydevproject
-/.ipynb_checkpoints
+/on-your-bike/.ipynb_checkpoints
 
 /on-your-bike/__pycache__/*
 /on-your-bike/credentials/*
