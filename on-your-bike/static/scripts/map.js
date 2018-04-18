@@ -112,7 +112,6 @@ function drawMarkers(map) {
 }
 
 function currentData(singleJson,marker_list){
-    
     document.getElementById("popup-container").innerHTML = `<h4 class="text-center">${singleJson["address"]}</h4>
     <dl class="dl-horizontal">
         <dt>Status</dt>
@@ -123,7 +122,6 @@ function currentData(singleJson,marker_list){
         <dd><span class = "label label-primary">${singleJson["bikes"]}</span></dd>
     </dl>
     <h6 class="text-center">Last updated time is ${new Date(singleJson["timestamp"])}</h6>`;
-
 }
 
 //Reference : https://canvasjs.com/
@@ -229,6 +227,7 @@ function startToEnd() {
     replaceWithJonnysFunction(fromLat, fromLng, toLat, toLng);
 }
 
+// REPLACE THIS!
 function replaceWithJonnysFunction(lat1, lng1, lat2, lng2){
     console.log(lat1, lng1, lat2, lng2);
 }
