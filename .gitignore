@@ -3,7 +3,7 @@
 /.idea
 /.pydevproject
 /on-your-bike/.ipynb_checkpoints
-/on-your-bike/models
+/on-your-bike/models/*
 
 /on-your-bike/__pycache__/*
 /on-your-bike/credentials/*
