@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+	<title>On Your Bike</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="../static/css/mainstyle.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.js.map">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/../static/jquery/jquery-3.3.1.min.js"><\/script>')</script>
+    
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+</head>
+    
+<body>
+    
+    <div id="title" class="container text-center">
+        <h1>On Your Bike</h1>
+    </div>
+    
+	<header class="container">
+		Introduction to Webpage goes here.
+	</header>
+    
+    <main class="container">
+        <section id="weather-section" class="row">
+            <div class="col-12">Weather Information goes here.</div>
+        </section>
+        <section id="bike-section" class="row">
+            <div id="map-container" class="col-8">Google Map goes here.</div>
+            <div id="popup-container" class="col-4">
+                <!-- Populated by Maps Marker click Event -->
+            </div>
+        </section>
+        <section>
+            <div id="graph-container" class="row chart">
+                <!-- Populated by Maps Marker click Event -->
+            </div>
+        </section>
+     
+        
+    </main>
+    
+    <footer class="container-fluid text-center">
+        Footer goes here.
+    </footer>
+
+    <!--  Google Map -->
+    <script src="../static/scripts/map.js"></script>
+    <script src="../static/scripts/MarkerClusterer/markerclusterer.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZr2Pr3Dul_fnzERWGB-oJqM2G0k7V8BI&callback=initMap"></script>
+    <!-- /Google Map -->
+
+        
+    
+</body>
+</html>

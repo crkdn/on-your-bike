@@ -5,57 +5,88 @@
 	<title>On Your Bike</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
     <link rel="stylesheet" href="../static/css/mainstyle.css" type="text/css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="/../static/jquery/jquery-3.3.1.min.js"><\/script>')</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>    
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
+   
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    
+
 
 </head>
     
 <body>
     
-    <div id="title" class="container-fluid text-center">
-        <h1>On Your Bike</h1>
-    </div>
-    
-	<header class="container">
-		Introduction to Webpage goes here.
-	</header>
-    
-    <main class="container">
-        <section id="weather-section" class="row">
-            <div class="col-12">Weather Information goes here.</div>
-        </section>
-        <section id="bike-section" class="row">
-            <div id="map-container" class="col-8">Google Map goes here.</div>
-            <div id="popup-container" class="col-4">
-                <!-- Populated by Maps Marker click Event -->
+    <nav class="navbar navbar-default navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                On Your Bike
+            </a>
             </div>
-        </section>
-        <section>
-            <div id="graph-container" class="row chart">
-                <!-- Populated by Maps Marker click Event -->
-            </div>
-        </section>
-     
-        
-    </main>
-    
-    <footer class="container-fluid text-center">
-        Footer goes here.
-    </footer>
+        </div>
+    </nav>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Introduction</h3>
+                Velit cupidatat occaecat occaecat irure amet irure reprehenderit magna eu adipisicing id qui do et. Aliqua sit Lorem ea duis commodo tempor sint tempor incididunt nisi magna esse ex amet. In in magna mollit reprehenderit fugiat elit consequat ex elit incididunt eu proident. Lorem nulla cupidatat nostrud consectetur ipsum labore pariatur ipsum aute consequat. Commodo ad dolor aliqua enim ea minim in nostrud.
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 free-space"></div>
+        </div>
+        <div class="row">
+            <div id="map-container" class="col-xs-8">
+                
+            </div>
+
+            <div id="popup-container" class="col-xs-4">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 free-space"></div>
+        </div>
+        
+        <div id="graph-container" class="row chart" style="height: 300px; width: 100%;">
+            
+        </div>
+        
+
+        
+    </div>
+    <div class="row">
+        <div class="col-xs-12 free-space"></div>
+    </div>
+    <nav class="navbar navbar-default navbar-bottom navbar-inverse" role="navigation">
+    </nav>
+    
     <!--  Google Map -->
     <script src="../static/scripts/map.js"></script>
     <script src="../static/scripts/MarkerClusterer/markerclusterer.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZr2Pr3Dul_fnzERWGB-oJqM2G0k7V8BI&callback=initMap"></script>
     <!-- /Google Map -->
 
+    
+    
+    
+    
         
     
-</body>
+    </body>
 </html>
