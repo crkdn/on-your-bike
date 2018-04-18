@@ -1,3 +1,9 @@
+function initialise() {
+    localStorage.removeItem("location");    // Delete saved location if user refreshes the page
+    initMap();
+    initAutocomplete();
+}
+
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map-container'), {
         zoom: 13,
@@ -62,8 +68,6 @@ function currentData(singleJson){
 <small>Last updated: ${new Date(singleJson["timestamp"])}</small>`;
 }
 
-
-
 function twentyFourHourGraph(multiJson){    
     var valuesDictionary = [];
     var f_ar = [];
@@ -79,9 +83,9 @@ function twentyFourHourGraph(multiJson){
 //        var custom_format = ('0' + date.getHours()).slice(-2) + '.' + ('0' + date.getMinutes()).slice(-2);
 //        console.log(custom_format)
         // return custom_format;
-        var data = new Date(time)
+        var data = new Date(time);
         return data;
-    }
+    };
 
     
    
@@ -125,4 +129,103 @@ function twentyFourHourGraph(multiJson){
     
     chart.render();
     
+}
+
+function initAutocomplete() {
+    var dublinBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(53.326093, -6.315996),
+        new google.maps.LatLng(53.383076, -6.205615)
+    );
+
+    var options = {
+        bounds: dublinBounds,
+        strictBounds: true
+    }
+
+    var fromInput = document.getElementById("from-location");
+    fromAutocomplete = new google.maps.places.Autocomplete(fromInput, options); // This needs to NOT be a "var"
+
+    var toInput = document.getElementById("to-location");
+    toAutocomplete = new google.maps.places.Autocomplete(toInput, options);     // No idea why - ask Google!
+}
+
+function startToEnd() {
+    let fromLat;
+    let fromLng;
+    let toLat;
+    let toLng;
+
+    if (document.getElementById("from-location").disabled){
+        var fromCoord = document.getElementById("from-location").value.split(", ");
+        fromLat = parseFloat(fromCoord[0]);
+        fromLng = parseFloat(fromCoord[1]);
+    } else{
+        fromLat = fromAutocomplete.getPlace().geometry.location.lat();
+        fromLng = fromAutocomplete.getPlace().geometry.location.lng();
+    }
+
+    if (document.getElementById("to-location").disabled) {
+        var toCoord = document.getElementById("to-location").value.split(", ");
+        toLat = parseFloat(toCoord[0]);
+        toLng = parseFloat(toCoord[1]);
+    } else {
+        toLat = toAutocomplete.getPlace().geometry.location.lat();
+        toLng = toAutocomplete.getPlace().geometry.location.lng();
+    }
+
+    replaceWithJonnysFunction(fromLat, fromLng, toLat, toLng);
+}
+
+function replaceWithJonnysFunction(lat1, lng1, lat2, lng2){
+    console.log(lat1, lng1, lat2, lng2);
+}
+
+function getLocation(inputBoxId) {
+    // if (navigator.appVersion.includes("Chrome")){
+    //     window.alert("Chrome requires HTTPS for this feature to work. If you wish to use this feature, please use another browser.");
+    // } else {
+    //     // Put code here
+    // }
+    let inputBoxElement = document.getElementById(inputBoxId);
+
+    // getCurrentPosition() can only take one value, so quick-and-dirty solution is to hard-code the values into two near-identical if clauses
+    if (inputBoxId === "from-location"){
+        if (!document.getElementById("from-checkbox").checked){
+            inputBoxElement.removeAttribute("disabled");
+            inputBoxElement.value = "";
+        } else {
+            let storedLocation = localStorage.getItem("location");
+            if (storedLocation){
+                let locationJSON = JSON.parse(storedLocation);
+                inputBoxElement.value = locationJSON["lat"] + ", " + locationJSON["lng"]
+                inputBoxElement.disabled = "true";
+            } else if (navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    let inputBoxElement = document.getElementById("from-location");
+                    inputBoxElement.value = position.coords.latitude + ", " + position.coords.longitude;
+                    inputBoxElement.disabled = "true";
+                    localStorage.setItem("location", JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
+                });
+            }
+        }
+    } else if (inputBoxId === "to-location"){
+        if (!document.getElementById("to-checkbox").checked){
+            inputBoxElement.removeAttribute("disabled");
+            inputBoxElement.value = "";
+        } else {
+            let storedLocation = localStorage.getItem("location");
+            if (storedLocation){
+                let locationJSON = JSON.parse(storedLocation);
+                inputBoxElement.value = locationJSON["lat"] + ", " + locationJSON["lng"]
+                inputBoxElement.disabled = "true";
+            } else if (navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    let inputBoxElement = document.getElementById("to-location");
+                    inputBoxElement.value = position.coords.latitude + ", " + position.coords.longitude;
+                    inputBoxElement.disabled = "true";
+                    localStorage.setItem("location", JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
+                });
+            }
+        }
+    }
 }
