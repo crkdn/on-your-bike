@@ -6,7 +6,9 @@ import pickle
 import pandas as pd
 import sklearn
 import datetime
-import model_conversion as mc 
+import model_conversion as mc
+import os
+import requests
 
 error_msg = False
 try:
@@ -15,6 +17,7 @@ except Exception as err:
     error_msg = "Import of custom module 'db_connection' failed. Fix error and restart flask application. Error - {}".format(err)
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -60,6 +63,7 @@ def get_live_data(station_id):
         })
     return jsonify(twenty_four_hours_data)
 
+
 @app.route("/station_prediction", methods=['GET', 'POST'])
 def get_station_prediction():  
     
@@ -102,6 +106,67 @@ def get_station_prediction():
     bike_availability = mc.bikeStandAvailability_to_bikeAvailability(bike_stand_availability)
     
     return jsonify({"bike_stand_availability": bike_stand_availability, "bike_availability": bike_availability })
+
+
+@app.route("/all-weather")
+def all_weather():
+    working_dir = os.path.dirname(os.path.abspath(__file__))
+    # Get OWM API key (do not place credentials under VCS)
+    with open(os.path.join(working_dir, "credentials/WeatherMapAPIKey.txt")) as file:
+        api_key = file.readline().strip()
+
+    # id is the key, value is the key for Dublin
+    parameters = {"id": 2964574, "APPID": api_key}
+
+    # response is the name of my dictionary
+    response = requests.get("https://api.openweathermap.org/data/2.5/weather", params=parameters).json()
+
+    # get the right data
+    weather_description = response["weather"][0]["main"]
+    icon = response["weather"][0]["icon"]
+    temperature = (response.get("main") or {}).get("temp")
+    wind_speed = (response.get("wind") or {}).get("speed")
+    clouds = (response.get("clouds") or {}).get("all")
+    rain = (response.get("rain") or {}).get("3h")
+    snow = (response.get("snow") or {}).get("3h")
+    timestamp = response.get("dt")
+    sunrise = (response.get("sys") or {}).get("sunrise")
+    sunset = (response.get("sys") or {}).get("sunset")
+
+    weather_data = {"description": weather_description,
+                    "icon": icon,
+                    "temperature": temperature,
+                    "wind": wind_speed,
+                    "cloud": clouds,
+                    "rain": rain,
+                    "snow": snow,
+                    "timestamp": timestamp,
+                    "sunrise": sunrise,
+                    "sunset": sunset}
+    return jsonify(weather_data)
+
+
+@app.route("/realtime-weather")
+def realtime_weather():
+    working_dir = os.path.dirname(os.path.abspath(__file__))
+    # Get OWM API key (do not place credentials under VCS)
+    with open(os.path.join(working_dir, "credentials/WeatherMapAPIKey.txt")) as file:
+        api_key = file.readline().strip()
+
+    # id is the key, value is the key for Dublin
+    parameters = {"id": 2964574, "APPID": api_key}
+
+    # response is the name of my dictionary
+    response = requests.get("https://api.openweathermap.org/data/2.5/weather", params=parameters).json()
+
+    # get the right data
+    weather_description = response["weather"][0]["main"]
+    icon = response["weather"][0]["icon"]
+    temperature = (response.get("main") or {}).get("temp")
+
+    weather_data = {"description": weather_description, "icon": icon, "temperature": temperature}
+    return jsonify(weather_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
