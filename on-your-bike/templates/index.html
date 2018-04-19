@@ -36,7 +36,9 @@
         </div>
 
         <section id="weather-section" class="row">
-            <div class="col-12" id="inner-weather">Weather Information goes here.</div>
+            <div class="col-12 text-center" id="inner-weather">
+                <!-- Populated on pageload by realtime-weather function -->
+            </div>
         </section>
         
         <section id="location-section" class="row">
@@ -54,7 +56,7 @@
         </section>
         
         <div class="text-center col-12">
-            <button onclick="startToEnd()">Go</button>
+            <button onclick="startToEnd()">Check Availability</button>
         </div>
         
         <div class="row">
@@ -62,6 +64,16 @@
                 
             </div>
             <div id="popup-container" class="col-4">
+                <div id="current-data">
+
+                </div>
+                <h4 class="text-center" id="availability-header"></h4>
+                <div id="from-prediction">
+
+                </div>
+                <div id="to-prediction">
+
+                </div>
             </div>
         </div>
         <div class="row">
