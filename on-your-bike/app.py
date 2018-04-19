@@ -104,6 +104,19 @@ def get_station_prediction():
     # run model
     bike_stand_availability = model.predict(X_new)[0]
     bike_availability = mc.bikeStandAvailability_to_bikeAvailability(bike_stand_availability)
+    if bike_stand_availability == "little":
+        bike_stand_availability = "Low"
+    elif bike_stand_availability == "moderate":
+        bike_stand_availability = "Medium"
+    else:
+        bike_stand_availability = "High"
+
+    if bike_availability == "little":
+        bike_availability = "Low"
+    elif bike_availability == "moderate":
+        bike_availability = "Medium"
+    else:
+        bike_availability = "High"
     
     return jsonify({"bike_stand_availability": bike_stand_availability, "bike_availability": bike_availability })
 
