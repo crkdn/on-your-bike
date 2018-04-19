@@ -282,7 +282,7 @@ function getLocation(inputBoxId) {
     }
 }
 
-function realtimeweather(){
+!function(){
 	fetch("realtime-weather")
 		.then(function(response){
 			if (response.ok){
@@ -296,4 +296,4 @@ function realtimeweather(){
 		.then(function(HTMLString){
 			document.getElementById("inner-weather").innerHTML = HTMLString;
 		});
-}
+}()
