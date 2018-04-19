@@ -4,9 +4,10 @@ function initialise() {
     initAutocomplete();
 }
 
+let map;
 function initMap() {
     console.log("Map init");
-    var map = new google.maps.Map(document.getElementById('map-container'), {
+    map = new google.maps.Map(document.getElementById('map-container'), {
         zoom: 13,
         center: {
             lat: 53.351,
@@ -14,51 +15,28 @@ function initMap() {
         }
     });
 
-    var markerCluster = drawMarkers(map);
+    let markerCluster = drawMarkers(map);
 }
 
-function calculate_distance(p1,p2){
-    return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
+function initAutocomplete() {
+    const dublinBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(53.326093, -6.315996),
+        new google.maps.LatLng(53.383076, -6.205615)
+    );
+
+    const options = {
+        bounds: dublinBounds,
+        strictBounds: true
+    };
+
+    let fromInput = document.getElementById("from-location");
+    fromAutocomplete = new google.maps.places.Autocomplete(fromInput, options); // This needs to NOT be explicitly declared as a variable or it fails.
+
+    let toInput = document.getElementById("to-location");
+    toAutocomplete = new google.maps.places.Autocomplete(toInput, options);     // No idea why - ask Google!
 }
 
-//approach taken from https://stackoverflow.com/questions/7997627/google-maps-how-to-get-the-distance-between-two-point-in-metre/7997732#7997732
-function getNearestMarkers(markers, lat_long){
-    let distance = 0;
-    let dist_map = {}
-    var p1 = new google.maps.LatLng(lat_long[0],lat_long[1]);
-    for(let i=0;i<markers.length;i++){
-        var p2 = new google.maps.LatLng(markers[i].position.lat(),markers[i].position.lng());
-        distance = calculate_distance(p1,p2);
-        if(dist_map[distance] == undefined){
-            dist_map[distance] = [markers[i]];
-        }
-        else{
-            dist_map[distance].push(markers[i]);
-        }
-        
-    }
-    
-    let dist_array = [];
-    for (let key in dist_map){
-        dist_array[dist_array.length] = key;
-    }
-    dist_array.sort();
-    
-    let nearest_dict = {}
-    let nearest = dist_array.slice(0,3);
-    console.log(nearest);
-    for(let i=0;i<3;i++){
-        nearest_dict[nearest[i]] = dist_map[nearest[i]];
-    }
-    
-    
-    return nearest_dict;
-        
-
-}
-
-var marker_list = [];
-
+const marker_list = [];
 function drawMarkers(map) {
     fetch("all-locations")
         .then(function (response){
@@ -67,15 +45,13 @@ function drawMarkers(map) {
         .then(function (stationJSON){
             console.log(stationJSON);
             return stationJSON.map(function (station) {
-                
-                var marker = new google.maps.Marker({
+                let marker = new google.maps.Marker({
                     position: {lat: station["latitude"], lng: station["longitude"]},
                     label: station["number"].toString()
                     });
-//                console.log(marker.position.lat());
-               
+
                 marker.addListener("click", function(){
-                    document.getElementById("popup-container").innerHTML = "<i>Loading...</i>";
+                    document.getElementById("current-data").innerHTML = "<i>Loading...</i>";
                     fetch(`live-data/${this.label}`).then(function(response){
                                 return response.json();
                     }).then(function(dynamicDataJSON){
@@ -83,36 +59,58 @@ function drawMarkers(map) {
                             twentyFourHourGraph(dynamicDataJSON);
                         });
                 });
+
                 marker_list.push(marker);
                 return marker;
             });
         })
         .then(function (markers){
-            console.log("Individulal");
-            console.log(marker_list);
-        
-            /*
-            Input : Array of markers and users station latlong
-            Output: Dictionary of 3 nearest stations
-                    {distance : array of Latlongvalue}
-            */
-        
-            let user_click_lat_long = [53.349809,-6.2624431];
-            let nearest_station = getNearestMarkers(marker_list, user_click_lat_long)
-            console.log(nearest_station);
-            
             return new MarkerClusterer(map, markers, {
                 imagePath: "../static/scripts/MarkerClusterer/m"
             });
-        
         });
-
-
-    
 }
 
-function currentData(singleJson,marker_list){
-    document.getElementById("popup-container").innerHTML = `<h4 class="text-center">${singleJson["address"]}</h4>
+// Approach taken from
+// https://stackoverflow.com/questions/7997627/google-maps-how-to-get-the-distance-between-two-point-in-metre/7997732#7997732
+function getNearestMarkers(markers, lat_long){
+    let distance = 0;
+    let dist_map = {};
+    let p1 = new google.maps.LatLng(lat_long[0],lat_long[1]);
+
+    for(let i = 0; i < markers.length; i++){
+        let p2 = new google.maps.LatLng(markers[i].position.lat(), markers[i].position.lng());
+        distance = calculate_distance(p1,p2);
+
+        if(dist_map[distance] === undefined){
+            dist_map[distance] = [markers[i]];
+        } else{
+            dist_map[distance].push(markers[i]);
+        }
+    }
+    
+    let dist_array = [];
+    for (let key in dist_map){
+        dist_array[dist_array.length] = key;
+    }
+    dist_array.sort();
+    
+    let nearest_dict = {};
+    let nearest = dist_array.slice(0,3);
+
+    for(let i = 0;i < 3;i++){
+        nearest_dict[nearest[i]] = dist_map[nearest[i]];
+    }
+    console.log(nearest_dict);
+    return nearest_dict;
+}
+
+function calculate_distance(p1,p2){
+    return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
+}
+
+function currentData(singleJson){
+    document.getElementById("current-data").innerHTML = `<h4 class="text-center">${singleJson["address"]}</h4>
     <dl class="dl-horizontal">
         <dt>Status</dt>
         <dd><span class = "label label-success">${singleJson["status"]}</span></dd>
@@ -121,83 +119,54 @@ function currentData(singleJson,marker_list){
         <dt>Free stands</dt>
         <dd><span class = "label label-primary">${singleJson["bikes"]}</span></dd>
     </dl>
-    <h6 class="text-center">Last updated time is ${new Date(singleJson["timestamp"])}</h6>`;
+    <small class="text-center">Last updated: ${new Date(singleJson["timestamp"])}</small>`;
 }
 
-//Reference : https://canvasjs.com/
-function twentyFourHourGraph(multiJson){    
-    var valuesDictionary = [];
-    var f_ar = [];
+// Reference : https://canvasjs.com/
+function twentyFourHourGraph(multiJson){
+    const f_ar = [];
     multiJson.forEach(function(days){
     
-        var time = days["timestamp"];
-        var available = days["available"];
+        let time = days["timestamp"];
+        let available = days["available"];
 
-   
-    time_conver = function(time){
-        var data = new Date(time);
-        return data;
-    };
+        time_conver = function(time){
+            return new Date(time);
+        };
 
-    
-    
-    var value_i = parseInt(time);
-    var available_i = parseInt(available);
-  
-    b_obj = {}
-    b_obj.x = time_conver(value_i);
-    b_obj.y = available_i;
-    f_ar.push(b_obj);
+        let value_i = parseInt(time);
+        let available_i = parseInt(available);
+
+        b_obj = {};
+        b_obj.x = time_conver(value_i);
+        b_obj.y = available_i;
+        f_ar.push(b_obj);
  
 
     });
-    
 
-    var chart = new CanvasJS.Chart("graph-container",
-    {
-      title:{
-        text: "Bike Data"
-      },
+    let chart = new CanvasJS.Chart("graph-container",
+        {
+          title: {
+            text: "Bike Data"
+          },
+          axisX: {
+            title: "Time",
+            gridThickness: 2,
+            valueFormatString: "HH:mm",
+            labelAngle: -20
+          },
+          axisY:{
+            title: "Availability"
+          },
+          data: [
+              {
+                  type: "line",
+                  dataPoints: f_ar
+              }]
+        });
 
-      axisX:{
-        title: "Time",
-        gridThickness: 2,
-        valueFormatString: "HH:mm",
-        // intervalType: "hour",        
-        labelAngle: -20
-      },
-      axisY:{
-        title: "Availability"
-      },
-      data: [
-      {        
-        type: "line",
-        dataPoints: f_ar
-      }
-      ]
-    });
-    
     chart.render();
-    
-    
-}
-
-function initAutocomplete() {
-    var dublinBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(53.326093, -6.315996),
-        new google.maps.LatLng(53.383076, -6.205615)
-    );
-
-    var options = {
-        bounds: dublinBounds,
-        strictBounds: true
-    }
-
-    var fromInput = document.getElementById("from-location");
-    fromAutocomplete = new google.maps.places.Autocomplete(fromInput, options); // This needs to NOT be a "var"
-
-    var toInput = document.getElementById("to-location");
-    toAutocomplete = new google.maps.places.Autocomplete(toInput, options);     // No idea why - ask Google!
 }
 
 function startToEnd() {
@@ -207,7 +176,7 @@ function startToEnd() {
     let toLng;
 
     if (document.getElementById("from-location").disabled){
-        var fromCoord = document.getElementById("from-location").value.split(", ");
+        let fromCoord = document.getElementById("from-location").value.split(", ");
         fromLat = parseFloat(fromCoord[0]);
         fromLng = parseFloat(fromCoord[1]);
     } else{
@@ -216,7 +185,7 @@ function startToEnd() {
     }
 
     if (document.getElementById("to-location").disabled) {
-        var toCoord = document.getElementById("to-location").value.split(", ");
+        let toCoord = document.getElementById("to-location").value.split(", ");
         toLat = parseFloat(toCoord[0]);
         toLng = parseFloat(toCoord[1]);
     } else {
@@ -224,60 +193,132 @@ function startToEnd() {
         toLng = toAutocomplete.getPlace().geometry.location.lng();
     }
 
-    replaceWithJonnysFunction(fromLat, fromLng, toLat, toLng);
+    document.getElementById("availability-header").innerHTML = "Plan Your Journey";
+    threePredictions(fromLat, fromLng, "from-prediction");
+    threePredictions(toLat, toLng, "to-prediction");
 }
 
-// REPLACE THIS!
-function replaceWithJonnysFunction(lat1, lng1, lat2, lng2){
-    console.log(lat1, lng1, lat2, lng2);
+function threePredictions(latitude, longitude, elementId){
+    console.log("MarkerList:");
+    console.log(marker_list);
+    let nearby = getNearestMarkers(marker_list, [latitude, longitude]);
+    let predictionHTML = [];
+    let startOrEnd = elementId === "from-prediction" ? "starting" : "end";
+    for (let marker in nearby){
+        console.log(nearby[marker][0]["label"]);
+        fetch("all-weather")
+            .then(function(weatherResponse){
+                return weatherResponse.json();
+            })
+            .then(function(weatherJSON){
+                fetch("station_prediction", {
+                    method: "post",
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        number: nearby[marker][0]["label"],
+                        timestamp: new Date().getTime() + 3600000,
+                        sunrise: weatherJSON["sunrise"],
+                        sunset: weatherJSON["sunset"],
+                        clouds: weatherJSON["cloud"],
+                        temperature: weatherJSON["temperature"],
+                        windspeed: weatherJSON["wind"]
+                    })
+                })
+                    .then(function(predictionResponse){
+                        return predictionResponse.json();
+                    })
+                    .then(function(predictionJSON){
+                        let stationNumber = nearby[marker][0]["label"];
+                        predictionHTML.push(`<span class="station-zoom" onclick="zoomToMarker(${stationNumber})"><img src="https://maps.google.com/mapfiles/ms/icons/red.png" alt="marker-icon"><b>Station ${stationNumber}:</b></span><br>
+<i>Available bikes:</i> ${predictionJSON["bike_availability"]}<br>
+<i>Available stands:</i> ${predictionJSON["bike_stand_availability"]}`);
+                    })
+                    .then(function(){
+                        if (predictionHTML.length === Object.keys(nearby).length){
+                            document.getElementById(elementId).innerHTML = `Stations near your ${startOrEnd} point for the next hour (click to see on the map): <br>` + predictionHTML.join("<br>\n") + "<br><br>";
+                        }
+                    });
+            });
+    }
+}
+
+function zoomToMarker(markerNumber){
+    for (let marker in marker_list){
+        if(markerNumber.toString() === marker_list[marker]["label"]){
+            map.setZoom(18);
+            map.panTo(marker_list[marker].position);
+        }
+    }
 }
 
 function getLocation(inputBoxId) {
-    // if (navigator.appVersion.includes("Chrome")){
-    //     window.alert("Chrome requires HTTPS for this feature to work. If you wish to use this feature, please use another browser.");
-    // } else {
-    //     // Put code here
-    // }
-    let inputBoxElement = document.getElementById(inputBoxId);
+    if (navigator.appVersion.includes("Chrome")){
+        window.alert("Chrome requires HTTPS for this feature to work. If you wish to use this feature, please use another browser.");
+    } else {
+        let inputBoxElement = document.getElementById(inputBoxId);
 
-    // getCurrentPosition() can only take one value, so quick-and-dirty solution is to hard-code the values into two near-identical if clauses
-    if (inputBoxId === "from-location"){
-        if (!document.getElementById("from-checkbox").checked){
-            inputBoxElement.removeAttribute("disabled");
-            inputBoxElement.value = "";
-        } else {
-            let storedLocation = localStorage.getItem("location");
-            if (storedLocation){
-                let locationJSON = JSON.parse(storedLocation);
-                inputBoxElement.value = locationJSON["lat"] + ", " + locationJSON["lng"]
-                inputBoxElement.disabled = "true";
-            } else if (navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    let inputBoxElement = document.getElementById("from-location");
-                    inputBoxElement.value = position.coords.latitude + ", " + position.coords.longitude;
+        // getCurrentPosition() can only take one value, so quick-and-dirty
+        // solution to ensure correct textbox is populated is to hard-code the
+        // values into two near-identical if clauses
+        // Not pretty or efficient, but it works.
+        if (inputBoxId === "from-location"){
+            if (!document.getElementById("from-checkbox").checked){
+                inputBoxElement.removeAttribute("disabled");
+                inputBoxElement.value = "";
+            } else {
+                let storedLocation = localStorage.getItem("location");
+                if (storedLocation){
+                    let locationJSON = JSON.parse(storedLocation);
+                    inputBoxElement.value = locationJSON["lat"] + ", " + locationJSON["lng"]
                     inputBoxElement.disabled = "true";
-                    localStorage.setItem("location", JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
-                });
+                } else if (navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        let inputBoxElement = document.getElementById("from-location");
+                        inputBoxElement.value = position.coords.latitude + ", " + position.coords.longitude;
+                        inputBoxElement.disabled = "true";
+                        localStorage.setItem("location", JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
+                    });
+                }
             }
-        }
-    } else if (inputBoxId === "to-location"){
-        if (!document.getElementById("to-checkbox").checked){
-            inputBoxElement.removeAttribute("disabled");
-            inputBoxElement.value = "";
-        } else {
-            let storedLocation = localStorage.getItem("location");
-            if (storedLocation){
-                let locationJSON = JSON.parse(storedLocation);
-                inputBoxElement.value = locationJSON["lat"] + ", " + locationJSON["lng"]
-                inputBoxElement.disabled = "true";
-            } else if (navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    let inputBoxElement = document.getElementById("to-location");
-                    inputBoxElement.value = position.coords.latitude + ", " + position.coords.longitude;
+        } else if (inputBoxId === "to-location"){
+            if (!document.getElementById("to-checkbox").checked){
+                inputBoxElement.removeAttribute("disabled");
+                inputBoxElement.value = "";
+            } else {
+                let storedLocation = localStorage.getItem("location");
+                if (storedLocation){
+                    let locationJSON = JSON.parse(storedLocation);
+                    inputBoxElement.value = locationJSON["lat"] + ", " + locationJSON["lng"]
                     inputBoxElement.disabled = "true";
-                    localStorage.setItem("location", JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
-                });
+                } else if (navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        let inputBoxElement = document.getElementById("to-location");
+                        inputBoxElement.value = position.coords.latitude + ", " + position.coords.longitude;
+                        inputBoxElement.disabled = "true";
+                        localStorage.setItem("location", JSON.stringify({lat: position.coords.latitude, lng: position.coords.longitude}));
+                    });
+                }
             }
         }
     }
 }
+
+// Load current weather data immediately upon page load
+!function(){
+	fetch("realtime-weather")
+		.then(function(response){
+			if (response.ok){
+				return response.json();
+			}
+		})
+		.then(function(JSONWeather){
+			// {"description": WeatherDescription, "icon": 04d, "temperature": Temperature}
+			return `<b>Current weather in Dublin:</b> ${Math.floor(JSONWeather["temperature"] - 273.15)}&deg;C - ${JSONWeather["description"]} <img src="http://openweathermap.org/img/w/${JSONWeather["icon"]}.png">`;
+		})
+		.then(function(HTMLString){
+			document.getElementById("inner-weather").innerHTML = HTMLString;
+		});
+}();

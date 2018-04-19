@@ -6,16 +6,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../static/css/mainstyle.css" type="text/css">
-
-    <!-- Why using Bootstrap 3.3.7 as well as 4.0.0? -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-    <!-- Do we even use JQuery? -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="/../static/jquery/jquery-3.3.1.min.js"><\/script>')</script>
-
-    <!-- What is Popper? -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
     
@@ -41,7 +33,9 @@
         </div>
 
         <section id="weather-section" class="row">
-            <div class="col-12 container-background">Weather Information goes here.</div>
+            <div class="col-12 container-background text-center" id="inner-weather">
+                <!-- Populated on pageload by realtime-weather function -->
+            </div>
         </section>
         
         <div class="row">
@@ -61,7 +55,7 @@
                 <input type="checkbox" id="to-checkbox" onclick="getLocation('to-location')">
             </div>
             <div class="text-center col-2 container-background">
-                <button onclick="startToEnd()">Go</button>
+                <button onclick="startToEnd()">Check Availability</button>
             </div>
         </section>
         
@@ -75,7 +69,12 @@
                 <div id="map-container" class="col-12 container-background"></div>
             </div>
             <div class="col-4" id="bootstrap-overwrite-popup">
-                <div id="popup-container" class="col-12 container-background"></div>
+                <div id="popup-container" class="col-12 container-background">
+					<div id="current-data"></div>
+                	<h4 class="text-center" id="availability-header"></h4>
+                	<div id="from-prediction"></div>
+                	<div id="to-prediction"></div>
+                </div>
             </div>
         </section>
         
