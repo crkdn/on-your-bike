@@ -281,3 +281,19 @@ function getLocation(inputBoxId) {
         }
     }
 }
+
+function realtimeweather(){
+	fetch("realtime-weather")
+		.then(function(response){
+			if (response.ok){
+				return response.json();
+			}
+		})
+		.then(function(JSONWeather){
+			// {"description": WeatherDescription, "icon": 04d, "temperature": Temperature}
+			return `<b>Icon</b> ${JSONWeather["icon"]}<br><b>Temperature</b> ${JSONWeather["temperature"]}<br><b>WeatherDescription</b> ${JSONWeather["description"]}`;
+		})
+		.then(function(HTMLString){
+			document.getElementById("inner-weather").innerHTML = HTMLString;
+		});
+}
