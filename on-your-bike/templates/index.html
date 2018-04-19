@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="../static/css/mainstyle.css" type="text/css">
 
     <!-- Why using Bootstrap 3.3.7 as well as 4.0.0? -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     <!-- Do we even use JQuery? -->
@@ -22,63 +20,70 @@
 </head>
     
 <body>
-    <nav class="navbar navbar-default navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-                On Your Bike
-            </a>
-            </div>
+    
+    <div id="title" class="container text-center">
+        <div class="row">
+            <div class="col-12"><img src=/../static/images/logo.png></div>
+            <div class="col-12"><h1 id="bootstrap-overwrite-header">On Your Bike</h1></div>
         </div>
-    </nav>
+    </div>
 
     <main class="container">
-        <div class="row">
-            <div class="col-12">
+        <section class="row">
+            <div class="col-12 container-background">
                 <h3>Introduction</h3>
                 Velit cupidatat occaecat occaecat irure amet irure reprehenderit magna eu adipisicing id qui do et. Aliqua sit Lorem ea duis commodo tempor sint tempor incididunt nisi magna esse ex amet. In in magna mollit reprehenderit fugiat elit consequat ex elit incididunt eu proident. Lorem nulla cupidatat nostrud consectetur ipsum labore pariatur ipsum aute consequat. Commodo ad dolor aliqua enim ea minim in nostrud.
             </div>
-        </div>
+        </section>
 
         <div class="row">
             <div class="col-12 free-space"></div>
         </div>
 
         <section id="weather-section" class="row">
-            <div class="col-12">Weather Information goes here.</div>
+            <div class="col-12 container-background">Weather Information goes here.</div>
         </section>
         
+        <div class="row">
+            <div class="col-12 free-space"></div>
+        </div>
+        
         <section id="location-section" class="row">
-            <div class="col-6">
+            <div class="col-5 container-background">
                 <input type="text" id="from-location" placeholder="From..." style="width: 100%">
                 <br>
                 <label for="from-checkbox">Use Current Location</label>
                 <input type="checkbox" id="from-checkbox" onclick="getLocation('from-location')">
             </div>
-            <div class="col-6">
+            <div class="col-5 container-background">
                 <input type="text" id="to-location" placeholder="To..." style="width: 100%">
                 <label for="from-checkbox">Use Current Location</label>
                 <input type="checkbox" id="to-checkbox" onclick="getLocation('to-location')">
             </div>
+            <div class="text-center col-2 container-background">
+                <button onclick="startToEnd()">Go</button>
+            </div>
         </section>
         
-        <div class="text-center col-12">
-            <button onclick="startToEnd()">Go</button>
-        </div>
-        
         <div class="row">
-            <div id="map-container" class="col-8">
-                
-            </div>
-            <div id="popup-container" class="col-4">
-            </div>
+            <div class="col-12 free-space"></div>
         </div>
+
+        
+        <section class="row">
+            <div class="col-8" id="bootstrap-overwrite-maps">
+                <div id="map-container" class="col-12 container-background"></div>
+            </div>
+            <div class="col-4" id="bootstrap-overwrite-popup">
+                <div id="popup-container" class="col-12 container-background"></div>
+            </div>
+        </section>
+        
         <div class="row">
             <div class="col-12 free-space"></div>
         </div>
         
         <div id="graph-container" class="row chart" style="height: 300px; width: 100%;">
-            
         </div>
     </main>
 
@@ -86,7 +91,21 @@
         <div class="col-12 free-space"></div>
     </div>
 
-    <nav class="navbar navbar-default navbar-bottom navbar-inverse" role="navigation"></nav>
+    <footer class="container-fluid">
+        <div class="row">
+            <img src=/../static/images/skyline.png style="width: 100%; height: auto; ">
+        </div>
+        <section id="footer-content" class="row">
+            <div class="col-1"></div>
+            <div id="team-members" class="col-3">TEAM MEMBERS<br><p>Gillian Donlon<br>Peter Hanrahan<br>Jonny Leon<br>Roman Maron</p></div>
+            <div id="general-info" class="col-4 text-center">Project description and Source Code available at our <br>
+                <a href="https://github.com/crkdn/on-your-bike">Github Repository</a>
+            </div>
+            <div class="col-2 text-right">ADDRESS<br><p>University College Dublin<br>Belfield, Dublin 4, Ireland</p></div>
+            <div class="col-1"><a href="http://www.ucd.ie/"><img id="ucd-logo" src=/../static/images/ucd_logo.png></a></div>
+            <div class="col-1"></div>
+        </section>
+    </footer>
     
     <!--  Google Map -->
     <script src="../static/scripts/map.js"></script>
