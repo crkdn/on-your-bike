@@ -30,7 +30,7 @@ function initAutocomplete() {
     };
 
     let fromInput = document.getElementById("from-location");
-    fromAutocomplete = new google.maps.places.Autocomplete(fromInput, options); // This needs to NOT be explicitly declared as a variable
+    fromAutocomplete = new google.maps.places.Autocomplete(fromInput, options); // This needs to NOT be explicitly declared as a variable or it fails.
 
     let toInput = document.getElementById("to-location");
     toAutocomplete = new google.maps.places.Autocomplete(toInput, options);     // No idea why - ask Google!
@@ -78,7 +78,7 @@ function getNearestMarkers(markers, lat_long){
     let dist_map = {};
     let p1 = new google.maps.LatLng(lat_long[0],lat_long[1]);
 
-    for(let i=0; i<markers.length; i++){
+    for(let i = 0; i < markers.length; i++){
         let p2 = new google.maps.LatLng(markers[i].position.lat(), markers[i].position.lng());
         distance = calculate_distance(p1,p2);
 
@@ -98,7 +98,7 @@ function getNearestMarkers(markers, lat_long){
     let nearest_dict = {};
     let nearest = dist_array.slice(0,3);
 
-    for(let i=0;i<3;i++){
+    for(let i = 0;i < 3;i++){
         nearest_dict[nearest[i]] = dist_map[nearest[i]];
     }
     console.log(nearest_dict);
@@ -219,7 +219,7 @@ function threePredictions(latitude, longitude, elementId){
                     },
                     body: JSON.stringify({
                         number: nearby[marker][0]["label"],
-                        timestamp: new Date().getTime(),
+                        timestamp: new Date().getTime() + 3600000,
                         sunrise: weatherJSON["sunrise"],
                         sunset: weatherJSON["sunset"],
                         clouds: weatherJSON["cloud"],
@@ -316,7 +316,7 @@ function getLocation(inputBoxId) {
 		})
 		.then(function(JSONWeather){
 			// {"description": WeatherDescription, "icon": 04d, "temperature": Temperature}
-			return `<b>Icon</b> ${JSONWeather["icon"]}<br><b>Temperature</b> ${JSONWeather["temperature"]}<br><b>WeatherDescription</b> ${JSONWeather["description"]}`;
+			return `<b>Current weather in Dublin:</b> ${Math.floor(JSONWeather["temperature"] - 273.15)}&deg;C - ${JSONWeather["description"]} <img src="http://openweathermap.org/img/w/${JSONWeather["icon"]}.png">`;
 		})
 		.then(function(HTMLString){
 			document.getElementById("inner-weather").innerHTML = HTMLString;
