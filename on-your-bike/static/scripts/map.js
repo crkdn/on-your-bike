@@ -147,21 +147,31 @@ function twentyFourHourGraph(multiJson){
 
     let chart = new CanvasJS.Chart("graph-container",
         {
+        backgroundColor: "#3C5F73",
           title: {
-            text: "Bike Data"
           },
           axisX: {
             title: "Time",
-            gridThickness: 2,
             valueFormatString: "HH:mm",
-            labelAngle: -20
+            labelAngle: -20,
+            labelFontColor: "white",
+            titleFontColor: "white",
+            lineColor: "white", 
+            tickColor: "white",
+            gridColor: "#3e7ea3",
           },
           axisY:{
-            title: "Availability"
+            title: "Availability",
+            labelFontColor: "white",
+            titleFontColor: "white",
+            lineColor: "white",
+            tickColor: "white", 
+            gridColor: "#3e7ea3",
           },
           data: [
               {
-                  type: "line",
+              	  color: "#E8C775",
+                  type: "splineArea",
                   dataPoints: f_ar
               }]
         });

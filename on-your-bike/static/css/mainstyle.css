@@ -34,7 +34,6 @@ h1 {
 
 footer{
     color: white;
-    background: linear-gradient(#3e7ea3, #f38630);
 }
 
 #footer-content {
@@ -85,21 +84,43 @@ button {
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 16px;
 }
 
 button:hover {
-    background-color: #c2d1dc; 
+    background-color: #d2dae0; 
     padding: 17px 34px;
 
 }
 
 button:active{
-    background-color: #c2d1dc; 
+    background-color: #d2dae0; 
     padding: 15px 32px;
 }
 
+#graph-container {
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 
+}
+
+#footer-image {
+	padding-top: 25px;
+	width: 100%;
+	height: auto;
+	background: linear-gradient(#3e7ea3, #f38630);
+	
+}
+
+input {
+    background-color: #ecf2f6;
+}
+
+#introduction {
+    text-align: justify;
+}
 
 
