@@ -1,18 +1,17 @@
+import os
+import pickle
+from importlib import reload
+
+import pandas as pd
+import requests
 from flask import Flask, jsonify, abort, request
 from flask.templating import render_template
-from importlib import reload
-import mysql
-import pickle
-import pandas as pd
-import sklearn
-import datetime
+
 import model_conversion as mc
-import os
-import requests
 
 error_msg = False
 try:
-    import db_connection as db
+    import db_connection as db      # Helper module to allow code re-use when connecting to the DB.
 except Exception as err:
     error_msg = "Import of custom module 'db_connection' failed. Fix error and restart flask application. Error - {}".format(err)
 
@@ -21,6 +20,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    """Render the home-page"""
     if error_msg:
         return error_msg
     return render_template("index.html")
@@ -28,7 +28,9 @@ def index():
 
 @app.route('/all-locations')
 def get_station_static_data():
-    
+    """Talk to our database and return a JSON representation of
+    all Bike Station co-ordinates with associated IDs"""
+
     try:
         if not db.cnx.is_connected():
             reload(db)
@@ -44,7 +46,9 @@ def get_station_static_data():
 
 @app.route("/live-data/<station_id>")
 def get_live_data(station_id):
-    
+    """Talks to our database, gets all the data we have on
+    station <station_id> in the last 24 hours,then returns it as JSON"""
+
     try:
         if not db.cnx.is_connected():
             reload(db)
@@ -61,12 +65,16 @@ def get_live_data(station_id):
             "bikes": bike_stands - available_stands,
             "available": available_stands
         })
+
     return jsonify(twenty_four_hours_data)
 
 
 @app.route("/station_prediction", methods=['GET', 'POST'])
 def get_station_prediction():  
-    
+    """Takes JSON submitted as the body of a HTTP request,
+    extracts the data into features required for our prediction
+    model, then returns a prediction of bike availability as JSON"""
+
     # get parameters for model and convert unix timestamp to datetime
     params = request.get_json()
     params["timestamp"] = pd.to_datetime(params["timestamp"], unit='ms')
@@ -123,6 +131,10 @@ def get_station_prediction():
 
 @app.route("/all-weather")
 def all_weather():
+    """Talks to OpenWeatherMap's API to get current weather,
+    extracts a subset of its information and returns it as JSON.
+    Used for passing current information to our prediction model"""
+
     working_dir = os.path.dirname(os.path.abspath(__file__))
     # Get OWM API key (do not place credentials under VCS)
     with open(os.path.join(working_dir, "credentials/WeatherMapAPIKey.txt")) as file:
@@ -161,6 +173,9 @@ def all_weather():
 
 @app.route("/realtime-weather")
 def realtime_weather():
+    """As with all_weather, but returns a smaller subset of the data.
+    Used for displaying weather info on the home page"""
+
     working_dir = os.path.dirname(os.path.abspath(__file__))
     # Get OWM API key (do not place credentials under VCS)
     with open(os.path.join(working_dir, "credentials/WeatherMapAPIKey.txt")) as file:

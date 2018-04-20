@@ -1,3 +1,9 @@
+"""
+This module was run once to gather static data about all of DublinBikes' stations.
+It connects to the JCDecaux API and saves the data we need into our database.
+
+It will also be run once per week to update the database, in case new stations are added.
+"""
 import requests
 import db_connection as db
 

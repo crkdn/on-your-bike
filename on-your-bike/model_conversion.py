@@ -1,6 +1,9 @@
-# Create classifier functions that can be used to convert numeric features into classes.
+"""
+Create classifier functions that can be used to convert numeric features into classes for prediction model.
+"""
+
+
 def classify_bikeStands(bikeStandsPerc):
-    availability = "LOL"
     if bikeStandsPerc <= 0.33:
         availability = "little"
     elif bikeStandsPerc <= 0.66:
@@ -9,26 +12,29 @@ def classify_bikeStands(bikeStandsPerc):
         availability = "abundant"
     return availability
 
+
 def bikeStandAvailability_to_bikeAvailability(availability):
+    # Bike availability is a simple inverse of bike stand availability.
     mapping = {"little": "abundant", "moderate": "moderate", "abundant": "little"}
     return mapping.get(availability)
 
+
 def classify_temp(temp):
-    temp_class = None
-    if temp <= 278.15:   #cold
+    # Temperatures are in Kelvin
+    if temp <= 278.15:    # cold
         temp_class = 0 
-    elif temp <= 283.15: #tolerable
+    elif temp <= 283.15:  # tolerable
         temp_class = 1
-    elif temp <= 288.15: #moderate
+    elif temp <= 288.15:  # moderate
         temp_class = 2
-    elif temp <= 293.15: #warm
+    elif temp <= 293.15:  # warm
         temp_class = 3
-    else:                #hot
+    else:                 # hot
         temp_class = 4
     return temp_class
 
+
 def classify_daytime(time, sunrise, sunset):
-    daytime_class = None
     if sunrise <= time <= sunset:
         if time < "12:00":
             daytime_class = "morning"
