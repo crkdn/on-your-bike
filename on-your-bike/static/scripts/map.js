@@ -111,15 +111,25 @@ function calculate_distance(p1,p2){
 
 function currentData(singleJson){
     document.getElementById("current-data").innerHTML = `<h4 class="text-center">${singleJson["address"]}</h4>
-    <dl class="dl-horizontal">
-        <dt>Status</dt>
-        <dd><span class = "label label-success">${singleJson["status"]}</span></dd>
-        <dt>Bikes Available</dt>
-        <dd><span class = "label label-primary">${singleJson["available"]}</span></dd>
-        <dt>Free stands</dt>
-        <dd><span class = "label label-primary">${singleJson["bikes"]}</span></dd>
-    </dl>
-    <small class="text-center">Last updated: ${new Date(singleJson["timestamp"])}</small>`;
+    <hr>
+    <div class="row">
+        <span class="col-8">Status</span>
+        <span class="col-4">${singleJson["status"]}</span>
+    </div>
+    <div class="row">
+        <span class="col-8">Available Bikes</span>
+        <span class="col-4">${singleJson["bikes"]}</span>
+    </div>
+    <div class="row">
+        <span class="col-8">Available Stands</span>
+        <span class="col-4">${singleJson["available"]}</span>
+    </div>
+    <br>
+    <div class="row text-center">
+    	<small class="col-12">Last Updated</small>
+        <small class="col-12">${new Date(singleJson["timestamp"])}</small>
+    </div>
+    <hr>`;
 }
 
 // Reference : https://canvasjs.com/
@@ -161,7 +171,7 @@ function twentyFourHourGraph(multiJson){
             gridColor: "#3e7ea3",
           },
           axisY:{
-            title: "Availability",
+            title: "Bike Stand Availability",
             labelFontColor: "white",
             titleFontColor: "white",
             lineColor: "white",
