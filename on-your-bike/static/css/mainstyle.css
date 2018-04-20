@@ -15,7 +15,7 @@ html body {
 }
 
 #weather-section {
-    height: 100px;
+    font-size: 140%;
 }
 
 #popup-container {
@@ -58,7 +58,7 @@ footer{
 
 .station-zoom:hover{
   cursor: pointer;
-  color: red;
+  color: #E8C775;
   text-decoration: underline;
 }
 
@@ -104,6 +104,8 @@ button:active{
     margin-left: auto;
     margin-right: auto;
     display: block;
+    height: 300px;
+    width: 100%;
 
 }
 
@@ -122,5 +124,22 @@ input {
 #introduction {
     text-align: justify;
 }
+
+
+hr {
+    background: #E8C775;
+}
+
+#to-location, #from-location {
+	width: 100%
+}
+
+#info {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding-right: 15px;
+}
+
 
 

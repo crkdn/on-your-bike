@@ -27,7 +27,7 @@
         </div>
 
         <section id="weather-section" class="row">
-            <div class="col-12 container-background text-center" id="inner-weather">
+            <div class="col-12 container-background text-center" id="inner-weather" style="margin: 0 auto; width: 100%">
                 <!-- Populated on pageload by realtime-weather function -->
             </div>
         </section>
@@ -38,19 +38,23 @@
         
         <section id="location-section" class="row">
             <div class="col-5 container-background">
-                <input type="text" id="from-location" placeholder="From..." style="width: 100%">
+                <input type="text" id="from-location" placeholder="From...">
                 <br>
                 <label for="from-checkbox">Use Current Location</label>
                 <input type="checkbox" id="from-checkbox" onclick="getLocation('from-location')">
             </div>
             <div class="col-5 container-background">
-                <input type="text" id="to-location" placeholder="To..." style="width: 100%">
+                <input type="text" id="to-location" placeholder="To...">
                 <label for="from-checkbox">Use Current Location</label>
                 <input type="checkbox" id="to-checkbox" onclick="getLocation('to-location')">
             </div>
             <div class="text-center col-2 container-background">
                 <button onclick="startToEnd()">Check Availability</button>
             </div>
+            <div class="col-12 container-background"><h3 id="availability-header">Get a recommendation based on location or...</h3></div>
+            <div id="from-prediction" class="col-5 container-background"></div>
+            <div class="col-2 container-background"></div>
+            <div id="to-prediction" class="col-5 container-background"></div>
         </section>
         
         <div class="row">
@@ -64,20 +68,18 @@
             </div>
             <div class="col-4" id="bootstrap-overwrite-popup">
                 <div id="popup-container" class="col-12 container-background">
-					<div id="current-data"></div>
-                	<h4 class="text-center" id="availability-header"></h4>
-                	<div id="from-prediction"></div>
-                	<div id="to-prediction"></div>
+					<div id="current-data"><div id="info" class="text-center"><h3>...click on any station for information</h3></div></div>
                 </div>
             </div>
         </section>
+        
         
         <div class="row">
             <div class="col-12 free-space"></div>
         </div>
         
         <div class="row">
-            <div id="graph-container" class="col-12 chart" style="height: 300px; width: 100%;"></div>
+            <div id="graph-container" class="col-12 chart"></div>
         </div>
     </main>
 
