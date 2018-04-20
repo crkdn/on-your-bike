@@ -51,6 +51,9 @@
             <div class="text-center col-2 container-background">
                 <button onclick="startToEnd()">Check Availability</button>
             </div>
+            <div class="col-12 container-background"><h3 id="availability-header">Get a recommendation based on location or...</h3></div>
+            <div id="from-prediction" class="col-6 container-background"></div>
+            <div id="to-prediction" class="col-6 container-background"></div>
         </section>
         
         <div class="row">
@@ -64,13 +67,11 @@
             </div>
             <div class="col-4" id="bootstrap-overwrite-popup">
                 <div id="popup-container" class="col-12 container-background">
-					<div id="current-data"></div>
-                	<h4 class="text-center" id="availability-header"></h4>
-                	<div id="from-prediction"></div>
-                	<div id="to-prediction"></div>
+					<div id="current-data"><div id="info" class="text-center"><h3>...click on any station for information</h3></div></div>
                 </div>
             </div>
         </section>
+        
         
         <div class="row">
             <div class="col-12 free-space"></div>

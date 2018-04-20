@@ -125,14 +125,6 @@ input {
     text-align: justify;
 }
 
-/* Code from http://jsfiddle.net/pDs4C/ */
-#fading-line { 
-    margin: 25px 0;
-    height: 2px;
-    border: 0;
-    background: #E8C775;
-    background: -webkit-gradient(linear, 0 0, 100% 0, from(#3c5f73), to(#3c5f73), color-stop(50%, #E8C775));
-}
 
 hr {
     background: #E8C775;
@@ -140,6 +132,12 @@ hr {
 
 #to-location, #from-location {
 	width: 100%
+}
+
+#info {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 
