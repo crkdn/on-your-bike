@@ -1,6 +1,10 @@
+"""
+This is a helper module written as a minor abstraction to simplify DB calls in other modules
+"""
 import mysql.connector
 import os
 
+# cron runs in "/" by default. Change working directory to not break relative locations:
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Keep keys outside of VCS

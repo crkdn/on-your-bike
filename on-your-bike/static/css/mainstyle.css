@@ -1,0 +1,145 @@
+#map-container {
+    height: 600px;
+
+}
+
+.free-space{
+    padding-bottom: 30px;
+}
+
+html body {
+    color: white;
+    background-color: #3e7ea3;
+    font-family: "Arial", sans-serif !important;
+    
+}
+
+#weather-section {
+    font-size: 140%;
+}
+
+#popup-container {
+    min-height: 600px;
+}
+
+h1 {
+    background: #ecf2f6;
+    justify-content:  space-around;
+}
+
+#title {
+    color: black;
+    padding: 25px 0px 80px 0px;
+}
+
+footer{
+    color: white;
+}
+
+#footer-content {
+    background: #111112;
+    padding-bottom: 50px;
+}
+
+
+#footer-content p{
+    padding-top: 5px;
+}
+
+#ucd-logo {
+    max-width:100%;
+    max-height:100%;
+}
+
+.container-background {
+    background: #3c5f73;
+    padding: 15px;
+}
+
+.station-zoom:hover{
+  cursor: pointer;
+  color: #E8C775;
+  text-decoration: underline;
+}
+
+#bootstrap-overwrite-maps {
+    padding-left: 0px;
+}
+
+#bootstrap-overwrite-popup {
+    padding-right: 0px;
+}
+
+#bootstrap-overwrite-header {
+    font-size: 40px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+button {
+    background-color: #ecf2f6;
+    border: none;
+    color: black;
+    text-transform: uppercase;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #d2dae0; 
+    padding: 17px 34px;
+
+}
+
+button:active{
+    background-color: #d2dae0; 
+    padding: 15px 32px;
+}
+
+#graph-container {
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 300px;
+    width: 100%;
+
+}
+
+#footer-image {
+	padding-top: 25px;
+	width: 100%;
+	height: auto;
+	background: linear-gradient(#3e7ea3, #f38630);
+	
+}
+
+input {
+    background-color: #ecf2f6;
+}
+
+#introduction {
+    text-align: justify;
+}
+
+
+hr {
+    background: #E8C775;
+}
+
+#to-location, #from-location {
+	width: 100%
+}
+
+#info {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding-right: 15px;
+}
+
+
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+	<title>On Your Bike</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/css/mainstyle.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+    
+<body>
+    
+    <div id="title" class="container text-center">
+        <div class="row">
+            <div class="col-12"><img src=/../static/images/logo.png></div>
+            <div class="col-12"><h1 id="bootstrap-overwrite-header">On Your Bike</h1></div>
+        </div>
+    </div>
+
+    <main class="container">
+
+        <div class="row">
+            <div class="col-12 free-space"></div>
+        </div>
+
+        <section id="weather-section" class="row">
+            <div class="col-12 container-background text-center" id="inner-weather" style="margin: 0 auto; width: 100%">
+                <!-- Populated on pageload by realtime-weather function -->
+            </div>
+        </section>
+        
+        <div class="row">
+            <div class="col-12 free-space"></div>
+        </div>
+        
+        <section id="location-section" class="row">
+            <div class="col-5 container-background">
+                <input type="text" id="from-location" placeholder="From...">
+                <br>
+                <label for="from-checkbox">Use Current Location</label>
+                <input type="checkbox" id="from-checkbox" onclick="getLocation('from-location')">
+            </div>
+            <div class="col-5 container-background">
+                <input type="text" id="to-location" placeholder="To...">
+                <label for="from-checkbox">Use Current Location</label>
+                <input type="checkbox" id="to-checkbox" onclick="getLocation('to-location')">
+            </div>
+            <div class="text-center col-2 container-background">
+                <button onclick="startToEnd()">Check Availability</button>
+            </div>
+            <div class="col-12 container-background"><h3 id="availability-header">Get a recommendation based on location or...</h3></div>
+            <div id="from-prediction" class="col-5 container-background"></div>
+            <div class="col-2 container-background"></div>
+            <div id="to-prediction" class="col-5 container-background"></div>
+        </section>
+        
+        <div class="row">
+            <div class="col-12 free-space"></div>
+        </div>
+
+        
+        <section class="row">
+            <div class="col-8" id="bootstrap-overwrite-maps">
+                <div id="map-container" class="col-12 container-background"></div>
+            </div>
+            <div class="col-4" id="bootstrap-overwrite-popup">
+                <div id="popup-container" class="col-12 container-background">
+					<div id="current-data"><div id="info" class="text-center"><h3>...click on any station for information</h3></div></div>
+                </div>
+            </div>
+        </section>
+        
+        
+        <div class="row">
+            <div class="col-12 free-space"></div>
+        </div>
+        
+        <div class="row">
+            <div id="graph-container" class="col-12 chart"></div>
+        </div>
+    </main>
+
+    <div class="row">
+        <div class="col-12 free-space"></div>
+    </div>
+
+    <footer class="container-fluid">
+        <div class="row">
+            <img src=/../static/images/skyline.png id="footer-image">
+        </div>
+        <section id="footer-content" class="row">
+            <div class="col-1"></div>
+            <div id="team-members" class="col-3">TEAM MEMBERS<br><p>Gillian Donlon<br>Peter Hanrahan<br>Jonny Leon<br>Roman Maron</p></div>
+            <div id="general-info" class="col-4 text-center">Project description and Source Code available at our <br>
+                <a href="https://github.com/crkdn/on-your-bike">Github Repository</a>
+            </div>
+            <div class="col-2 text-right">ADDRESS<br><p>University College Dublin<br>Belfield, Dublin 4, Ireland</p></div>
+            <div class="col-1"><a href="http://www.ucd.ie/"><img id="ucd-logo" src=/../static/images/ucd_logo.png></a></div>
+            <div class="col-1"></div>
+        </section>
+    </footer>
+    
+    <!--  Google Map -->
+    <script src="../static/scripts/map.js"></script>
+    <script src="../static/scripts/MarkerClusterer/markerclusterer.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZr2Pr3Dul_fnzERWGB-oJqM2G0k7V8BI&libraries=places,geometry&callback=initialise"></script>
+    <!-- /Google Map -->
+
+    </body>
+</html>

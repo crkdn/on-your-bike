@@ -1,9 +1,14 @@
+"""
+
+"""
+
 import logging
 import requests
 import db_connection as db
 import mysql
 import os
 
+# cron runs in "/" by default. Change working directory to not break relative locations:
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Set up logger (do not place logs under VCS)
@@ -23,7 +28,6 @@ except requests.exceptions.RequestException as e:
  
 # Process response 
 if response.status_code == 200:
-    
     all_stations = response.json()
     query = "INSERT INTO BikeStationDynamicData VALUES (%s, %s, %s, %s, %s, %s)"
     
@@ -46,4 +50,3 @@ else:
  
 db.commit()
 db.close()
-    
