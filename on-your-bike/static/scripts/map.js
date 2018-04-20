@@ -258,7 +258,7 @@ function threePredictions(latitude, longitude, elementId){
                     })
                     .then(function(){
                         if (predictionHTML.length === Object.keys(nearby).length){
-                            document.getElementById(elementId).innerHTML = `Stations near your ${startOrEnd} point for the next hour (click to see on the map): <br>` + predictionHTML.join("<br>\n") + "<br><br>";
+                            document.getElementById(elementId).innerHTML = `Stations near your ${startOrEnd} point for the next hour (click to see on the map):<hr> <br>` + predictionHTML.join("<br>\n") + "<br><br>";
                         }
                     });
             });

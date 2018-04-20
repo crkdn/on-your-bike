@@ -15,7 +15,7 @@ html body {
 }
 
 #weather-section {
-    height: 100px;
+    font-size: 140%;
 }
 
 #popup-container {
@@ -58,7 +58,7 @@ footer{
 
 .station-zoom:hover{
   cursor: pointer;
-  color: red;
+  color: #E8C775;
   text-decoration: underline;
 }
 
@@ -138,6 +138,7 @@ hr {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    padding-right: 15px;
 }
 
 
