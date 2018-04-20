@@ -1,32 +1,126 @@
-/*
-#weather-section {
-    height: 100px;
-    border: 1px solid black;
-}
-*/
-
 #map-container {
     height: 600px;
-/*    width: 100%;*/
-/*    border: 1px solid black;*/
+
 }
 
 .free-space{
     padding-bottom: 30px;
 }
-#popup-container {
-/*
-    min-height: 100px;
-    border: 1px solid black;
-*/
+
+html body {
+    color: white;
+    background-color: #3e7ea3;
+    font-family: "Arial", sans-serif !important;
+    
 }
 
-/*
-header {
-    text-align: justify;
+#weather-section {
     height: 100px;
-    border: 1px solid black;
 }
-*/
+
+#popup-container {
+    min-height: 600px;
+}
+
+h1 {
+    background: #ecf2f6;
+    justify-content:  space-around;
+}
+
+#title {
+    color: black;
+    padding: 25px 0px 80px 0px;
+}
+
+footer{
+    color: white;
+}
+
+#footer-content {
+    background: #111112;
+    padding-bottom: 50px;
+}
+
+
+#footer-content p{
+    padding-top: 5px;
+}
+
+#ucd-logo {
+    max-width:100%;
+    max-height:100%;
+}
+
+.container-background {
+    background: #3c5f73;
+    padding: 15px;
+}
+
+.station-zoom:hover{
+  cursor: pointer;
+  color: red;
+  text-decoration: underline;
+}
+
+#bootstrap-overwrite-maps {
+    padding-left: 0px;
+}
+
+#bootstrap-overwrite-popup {
+    padding-right: 0px;
+}
+
+#bootstrap-overwrite-header {
+    font-size: 40px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+button {
+    background-color: #ecf2f6;
+    border: none;
+    color: black;
+    text-transform: uppercase;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #d2dae0; 
+    padding: 17px 34px;
+
+}
+
+button:active{
+    background-color: #d2dae0; 
+    padding: 15px 32px;
+}
+
+#graph-container {
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+}
+
+#footer-image {
+	padding-top: 25px;
+	width: 100%;
+	height: auto;
+	background: linear-gradient(#3e7ea3, #f38630);
+	
+}
+
+input {
+    background-color: #ecf2f6;
+}
+
+#introduction {
+    text-align: justify;
+}
 
 
